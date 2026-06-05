@@ -1,0 +1,50 @@
+suite: chart configmap
+release:
+  name: apex-dispatch-api
+templates:
+  - templates/configmap.yaml
+tests:
+  - it: renders configmap from default application values
+    asserts:
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.name
+          value: apex-dispatch-api-config
+      - equal:
+          path: data.APP_NAME
+          value: APEx Dispatch API
+      - equal:
+          path: data.APP_ENV
+          value: development
+      - equal:
+          path: data.KEYCLOAK_HOST
+          value: auth.dev.apex.esa.int
+
+  - it: renders configmap overrides from values
+    set:
+      app:
+        name: Custom API
+        description: Knative FastAPI
+        environment: production
+        version: "1.2.3"
+        corsAllowedOrigins: https://example.org
+      keycloak:
+        host: login.example.org
+        realm: apex-prod
+    asserts:
+      - equal:
+          path: data.APP_NAME
+          value: Custom API
+      - equal:
+          path: data.APP_DESCRIPTION
+          value: Knative FastAPI
+      - equal:
+          path: data.APP_VERSION
+          value: "1.2.3"
+      - equal:
+          path: data.CORS_ALLOWED_ORIGINS
+          value: https://example.org
+      - equal:
+          path: data.KEYCLOAK_REALM
+          value: apex-prod

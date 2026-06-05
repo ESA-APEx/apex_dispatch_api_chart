@@ -1,0 +1,6 @@
+1. Build and push the FastAPI image referenced in `values.yaml`.
+2. Install the chart with:
+   helm install <release-name> ./charts
+3. If you are reusing an existing secret, set `secrets.create=false` and make sure
+   the secret named by `secrets.name` contains `KEYCLOAK_CLIENT_ID`,
+   `KEYCLOAK_CLIENT_SECRET`, and `BACKENDS`.

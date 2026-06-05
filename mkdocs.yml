@@ -1,0 +1,20 @@
+site_name: APEx Dispatch API Chart
+site_description: Documentation for the APEx Dispatch API Knative Helm chart
+theme:
+  name: readthedocs
+
+nav:
+  - Home: index.md
+  - Tutorials:
+      - Overview: tutorials/index.md
+      - First Knative Deployment: tutorials/first-knative-deployment.md
+  - How-To Guides:
+      - Overview: how-to/index.md
+      - Render The Chart Locally: how-to/render-the-chart-locally.md
+      - Deploy With A Custom Image: how-to/deploy-with-a-custom-image.md
+      - Reuse An Existing Kubernetes Secret: how-to/reuse-an-existing-secret.md
+      - Enable Health Probes: how-to/enable-health-probes.md
+  - Explanation:
+      - Overview: explanation/index.md
+  - Reference:
+      - Overview: reference/index.md

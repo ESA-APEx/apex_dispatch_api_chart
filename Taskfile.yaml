@@ -1,0 +1,28 @@
+version: "3"
+
+vars:
+  RELEASE_NAME: apex-dispatch-api
+  CHART_DIR: ./charts
+  RENDERED_FILE: ./dist/rendered.yaml
+
+tasks:
+  helm:render:
+    desc: Render Helm templates to a local manifest file
+    cmds:
+      - mkdir -p ./dist
+      - helm template {{.RELEASE_NAME}} {{.CHART_DIR}} > {{.RENDERED_FILE}}
+
+  helm:test:
+    desc: Run Helm unit tests
+    cmds:
+      - cd {{.CHART_DIR}} && helm-unittest .
+
+  docs:serve:
+    desc: Render project documentation 
+    cmds:
+      - uv run --with mkdocs mkdocs serve
+
+  docs:build:
+    desc: Build project documentation
+    cmds:
+      - uv run --with mkdocs mkdocs build --strict
