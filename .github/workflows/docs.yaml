@@ -1,65 +1,34 @@
 name: docs
 
 on:
-  pull_request:
-    paths:
-      - "docs/**"
-      - "mkdocs.yml"
-      - "Taskfile.yaml"
-      - ".github/workflows/docs.yaml"
   push:
     branches:
+      - docs
+      - develop
       - main
     paths:
+      - "README.md"
       - "docs/**"
       - "mkdocs.yml"
-      - "Taskfile.yaml"
-      - ".github/workflows/docs.yaml"
-  workflow_dispatch:
+      - ".github/**"
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Setup Task
-        uses: arduino/setup-task@v2
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v5
         with:
-          enablement: true
+          python-version: "3.x"
 
-      - name: Build documentation
-        run: task docs:build
+      - name: Install MkDocs dependencies
+        run: pip install mkdocs-material mkdocs-mermaid2-plugin
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-  deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy documentation
+        run: mkdocs gh-deploy --force
