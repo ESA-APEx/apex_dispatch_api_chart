@@ -49,6 +49,25 @@ task docs:build
 helm install apex-dispatch-api ./charts
 ```
 
+## OCI Distribution
+
+The Helm chart is also published as an OCI artifact in GitHub Container Registry:
+
+- Package page: [ghcr.io OCI package](https://github.com/ESA-APEx/apex_dispatch_api_chart/pkgs/container/helm%2Fapex-dispatch-api)
+- OCI reference: `oci://ghcr.io/esa-apex/helm/apex-dispatch-api`
+
+Pull the chart from GHCR:
+
+```bash
+helm pull oci://ghcr.io/esa-apex/helm/apex-dispatch-api --version 0.1.0
+```
+
+Install directly from the OCI registry:
+
+```bash
+helm install apex-dispatch-api oci://ghcr.io/esa-apex/helm/apex-dispatch-api --version 0.1.0
+```
+
 ## Important values
 
 - `serviceAccountName`: Kubernetes service account used by the Knative revision pod

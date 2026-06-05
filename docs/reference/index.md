@@ -7,10 +7,29 @@ This page is the technical lookup for the APEx Dispatch API Knative Helm chart.
 - Chart path: `charts/`
 - Chart API version: `v2`
 - Workload kind: `serving.knative.dev/v1` `Service`
+- OCI artifact: `oci://ghcr.io/esa-apex/helm/apex-dispatch-api`
+- OCI package page: [GitHub Container Registry package](https://github.com/ESA-APEx/apex_dispatch_api_chart/pkgs/container/helm%2Fapex-dispatch-api)
 - Main templates:
   - `templates/service.yaml`
   - `templates/configmap.yaml`
   - `templates/secret.yaml`
+
+## OCI Distribution
+
+The chart is published as an OCI artifact in GitHub Container Registry and can be
+consumed without cloning this repository.
+
+### Pull a specific version
+
+```bash
+helm pull oci://ghcr.io/esa-apex/helm/apex-dispatch-api --version 0.1.0
+```
+
+### Install directly from GHCR
+
+```bash
+helm install apex-dispatch-api oci://ghcr.io/esa-apex/helm/apex-dispatch-api --version 0.1.0
+```
 
 ## Rendered Resources
 
