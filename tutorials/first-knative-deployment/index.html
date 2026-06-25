@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>First Knative Deployment - APEx Dispatch API Chart</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "First Knative Deployment";
+        var mkdocs_page_input_path = "tutorials/first-knative-deployment.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> APEx Dispatch API Chart
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Tutorials</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">First Knative Deployment</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#before-you-start">Before You Start</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-1-review-the-chart-structure">Step 1: Review the chart structure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-2-create-a-values-override-file">Step 2: Create a values override file</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-3-check-that-the-secret-exists">Step 3: Check that the secret exists</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-4-render-the-manifests-locally">Step 4: Render the manifests locally</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-5-run-the-chart-tests">Step 5: Run the chart tests</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-6-install-the-chart">Step 6: Install the chart</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-7-verify-the-deployment">Step 7: Verify the deployment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#what-you-learned">What You Learned</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">How-To Guides</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../how-to/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../how-to/render-the-chart-locally/">Render The Chart Locally</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../how-to/deploy-with-a-custom-image/">Deploy With A Custom Image</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../how-to/expose-with-contour-httpproxy/">Expose With Contour HTTPProxy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../how-to/reuse-an-existing-secret/">Reuse An Existing Kubernetes Secret</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../how-to/enable-health-probes/">Enable Health Probes</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Explanation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../explanation/">Overview</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/">Overview</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">APEx Dispatch API Chart</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Tutorials</li>
+      <li class="breadcrumb-item active">First Knative Deployment</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="first-knative-deployment">First Knative Deployment</h1>
+<p>This tutorial walks through a first deployment flow for the APEx Dispatch API Helm
+chart. By the end, you will have rendered the manifests, reviewed the key settings,
+and installed the chart into a Knative-enabled Kubernetes cluster.</p>
+<h2 id="before-you-start">Before You Start</h2>
+<p>You need:</p>
+<ul>
+<li><code>helm</code></li>
+<li><code>task</code></li>
+<li>access to a Kubernetes cluster with Knative Serving installed</li>
+<li>a container image for the APEx Dispatch API</li>
+<li>a Kubernetes secret containing the application credentials and backend settings</li>
+</ul>
+<p>In this tutorial, we will use:</p>
+<ul>
+<li>release name: <code>apex-dispatch-api</code></li>
+<li>namespace: <code>default</code></li>
+<li>chart path: <code>./charts</code></li>
+<li>values override file: <code>tutorial-values.yaml</code></li>
+</ul>
+<h2 id="step-1-review-the-chart-structure">Step 1: Review the chart structure</h2>
+<p>From the repository root, inspect the main chart files:</p>
+<pre><code class="language-bash">find charts -maxdepth 2 -type f | sort
+</code></pre>
+<p>You should see templates for:</p>
+<ul>
+<li>the Knative <code>Service</code></li>
+<li>the <code>ConfigMap</code></li>
+<li>the optional <code>Secret</code></li>
+<li>Helm unit tests under <code>charts/tests</code></li>
+</ul>
+<h2 id="step-2-create-a-values-override-file">Step 2: Create a values override file</h2>
+<p>Create a file named <code>tutorial-values.yaml</code> with the following contents:</p>
+<pre><code class="language-yaml">image:
+  repository: registry.example.org/apex-dispatch-api
+  tag: 0.7.2
+
+knative:
+  minScale: 1
+  maxScale: 2
+
+app:
+  environment: development
+  corsAllowedOrigins: &quot;*&quot;
+
+secrets:
+  create: false
+  name: apex-dispatch-api-secrets
+</code></pre>
+<p>This tells the chart which image to run and which existing secret to reference.</p>
+<h2 id="step-3-check-that-the-secret-exists">Step 3: Check that the secret exists</h2>
+<p>The chart expects the referenced secret to contain:</p>
+<ul>
+<li><code>KEYCLOAK_CLIENT_ID</code></li>
+<li><code>KEYCLOAK_CLIENT_SECRET</code></li>
+<li><code>BACKENDS</code></li>
+</ul>
+<p>Verify it with:</p>
+<pre><code class="language-bash">kubectl get secret apex-dispatch-api-secrets
+</code></pre>
+<p>If the secret does not exist yet, create it before continuing.</p>
+<h2 id="step-4-render-the-manifests-locally">Step 4: Render the manifests locally</h2>
+<p>Render the chart with:</p>
+<pre><code class="language-bash">helm template apex-dispatch-api ./charts -f tutorial-values.yaml
+</code></pre>
+<p>Or use the repository task:</p>
+<pre><code class="language-bash">task helm:render
+</code></pre>
+<p>During review, look for:</p>
+<ul>
+<li>the Knative <code>Service</code> resource</li>
+<li>the configured container image</li>
+<li>the <code>minScale</code> and <code>maxScale</code> annotations</li>
+<li>the secret name under the container environment references</li>
+</ul>
+<h2 id="step-5-run-the-chart-tests">Step 5: Run the chart tests</h2>
+<p>Run:</p>
+<pre><code class="language-bash">task helm:test
+</code></pre>
+<p>This confirms that the chart templates still satisfy the current Helm unit tests
+before you install anything.</p>
+<h2 id="step-6-install-the-chart">Step 6: Install the chart</h2>
+<p>Install the release with:</p>
+<pre><code class="language-bash">helm upgrade --install apex-dispatch-api ./charts -f tutorial-values.yaml
+</code></pre>
+<p>This creates the Knative service and supporting resources in the current Kubernetes
+context.</p>
+<h2 id="step-7-verify-the-deployment">Step 7: Verify the deployment</h2>
+<p>Check that the Knative service exists:</p>
+<pre><code class="language-bash">kubectl get ksvc apex-dispatch-api
+</code></pre>
+<p>Then inspect the rendered URL and readiness:</p>
+<pre><code class="language-bash">kubectl describe ksvc apex-dispatch-api
+</code></pre>
+<p>At this point, you should be able to confirm that:</p>
+<ul>
+<li>the service revision was created</li>
+<li>the image is the one you configured</li>
+<li>the service is using the expected secret and config map</li>
+</ul>
+<h2 id="what-you-learned">What You Learned</h2>
+<p>You have now completed a basic deployment flow for the chart:</p>
+<ul>
+<li>prepared override values</li>
+<li>verified the secret contract</li>
+<li>rendered the chart locally</li>
+<li>ran Helm unit tests</li>
+<li>installed the chart into Knative</li>
+</ul>
+<p>From here, a good next step is to continue with the how-to guides for custom images,
+probes, and secret reuse.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../how-to/" class="btn btn-neutral float-right" title="Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../how-to/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

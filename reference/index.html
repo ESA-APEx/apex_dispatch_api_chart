@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Overview - APEx Dispatch API Chart</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Overview";
+        var mkdocs_page_input_path = "reference/index.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> APEx Dispatch API Chart
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Tutorials</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../tutorials/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tutorials/first-knative-deployment/">First Knative Deployment</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">How-To Guides</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../how-to/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../how-to/render-the-chart-locally/">Render The Chart Locally</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../how-to/deploy-with-a-custom-image/">Deploy With A Custom Image</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../how-to/expose-with-contour-httpproxy/">Expose With Contour HTTPProxy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../how-to/reuse-an-existing-secret/">Reuse An Existing Kubernetes Secret</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../how-to/enable-health-probes/">Enable Health Probes</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Explanation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../explanation/">Overview</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Overview</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#chart-overview">Chart Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#oci-distribution">OCI Distribution</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pull-a-specific-version">Pull a specific version</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#install-directly-from-ghcr">Install directly from GHCR</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rendered-resources">Rendered Resources</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#default-values">Default Values</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#naming">Naming</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#image">Image</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#service-port">Service Port</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#contour-httpproxy">Contour HTTPProxy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#knative">Knative</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#application-config">Application Config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#keycloak">Keycloak</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#secrets">Secrets</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#scheduling-and-runtime">Scheduling and Runtime</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#probes">Probes</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment Variables</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#from-the-configmap">From the ConfigMap</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#from-the-secret">From the Secret</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#secret-contract">Secret Contract</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#knative-service-behavior">Knative Service Behavior</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#contour-httpproxy-behavior">Contour HTTPProxy Behavior</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#repository-tasks">Repository Tasks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#test-suites">Test Suites</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">APEx Dispatch API Chart</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Reference</li>
+      <li class="breadcrumb-item active">Overview</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="reference">Reference</h1>
+<p>This page is the technical lookup for the APEx Dispatch API Knative Helm chart.</p>
+<h2 id="chart-overview">Chart Overview</h2>
+<ul>
+<li>Chart path: <code>charts/</code></li>
+<li>Chart API version: <code>v2</code></li>
+<li>Workload kind: <code>serving.knative.dev/v1</code> <code>Service</code></li>
+<li>Optional ingress kind: <code>projectcontour.io/v1</code> <code>HTTPProxy</code></li>
+<li>OCI artifact: <code>oci://ghcr.io/esa-apex/helm/apex-dispatch-api</code></li>
+<li>OCI package page: <a href="https://github.com/ESA-APEx/apex_dispatch_api_chart/pkgs/container/helm%2Fapex-dispatch-api">GitHub Container Registry package</a></li>
+<li>Main templates:</li>
+<li><code>templates/service.yaml</code></li>
+<li><code>templates/httpproxy.yaml</code></li>
+<li><code>templates/configmap.yaml</code></li>
+<li><code>templates/secret.yaml</code></li>
+</ul>
+<h2 id="oci-distribution">OCI Distribution</h2>
+<p>The chart is published as an OCI artifact in GitHub Container Registry and can be
+consumed without cloning this repository.</p>
+<h3 id="pull-a-specific-version">Pull a specific version</h3>
+<pre><code class="language-bash">helm pull oci://ghcr.io/esa-apex/helm/apex-dispatch-api --version 0.1.0
+</code></pre>
+<h3 id="install-directly-from-ghcr">Install directly from GHCR</h3>
+<pre><code class="language-bash">helm install apex-dispatch-api oci://ghcr.io/esa-apex/helm/apex-dispatch-api --version 0.1.0
+</code></pre>
+<h2 id="rendered-resources">Rendered Resources</h2>
+<p>The chart can render these Kubernetes resources:</p>
+<ul>
+<li><code>ConfigMap</code></li>
+<li>Name pattern: <code>&lt;release&gt;-apex-dispatch-api-config</code></li>
+<li>Purpose: non-secret application configuration</li>
+<li><code>Secret</code></li>
+<li>Rendered only when <code>secrets.create=true</code></li>
+<li>Purpose: secret application configuration</li>
+<li>Knative <code>Service</code></li>
+<li>API version: <code>serving.knative.dev/v1</code></li>
+<li>Purpose: deploy the FastAPI container with Knative Serving</li>
+<li>Contour <code>HTTPProxy</code></li>
+<li>Rendered only when <code>contour.enabled=true</code></li>
+<li>API version: <code>projectcontour.io/v1</code></li>
+<li>Purpose: publish the Knative service with host/path routing and optional TLS</li>
+</ul>
+<h2 id="default-values">Default Values</h2>
+<h3 id="naming">Naming</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nameOverride</code></td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>fullnameOverride</code></td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>serviceAccountName</code></td>
+<td><code>dispatch-api-service-account</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="image">Image</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>image.repository</code></td>
+<td><code>apex-dispatch-api</code></td>
+</tr>
+<tr>
+<td><code>image.tag</code></td>
+<td><code>latest</code></td>
+</tr>
+<tr>
+<td><code>image.pullPolicy</code></td>
+<td><code>IfNotPresent</code></td>
+</tr>
+<tr>
+<td><code>image.pullSecrets</code></td>
+<td><code>[]</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="service-port">Service Port</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>service.port</code></td>
+<td><code>8000</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="contour-httpproxy">Contour HTTPProxy</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contour.enabled</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>contour.name</code></td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>contour.annotations</code></td>
+<td><code>{}</code></td>
+</tr>
+<tr>
+<td><code>contour.labels</code></td>
+<td><code>{}</code></td>
+</tr>
+<tr>
+<td><code>contour.virtualhost.fqdn</code></td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>contour.virtualhost.tls.enabled</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>contour.virtualhost.tls.secretName</code></td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>contour.virtualhost.tls.minimumProtocolVersion</code></td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>contour.virtualhost.tls.permitInsecure</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>contour.route.prefix</code></td>
+<td><code>/</code></td>
+</tr>
+<tr>
+<td><code>contour.route.port</code></td>
+<td><code>80</code></td>
+</tr>
+<tr>
+<td><code>contour.route.enableWebsockets</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>contour.route.timeoutPolicy.response</code></td>
+<td><code>""</code></td>
+</tr>
+</tbody>
+</table>
+<p>When <code>contour.enabled=true</code>:</p>
+<ul>
+<li><code>contour.virtualhost.fqdn</code> is required</li>
+<li>if <code>contour.virtualhost.tls.enabled=true</code>, <code>contour.virtualhost.tls.secretName</code> is required</li>
+</ul>
+<h3 id="knative">Knative</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>knative.annotations</code></td>
+<td><code>{}</code></td>
+</tr>
+<tr>
+<td><code>knative.labels</code></td>
+<td><code>{}</code></td>
+</tr>
+<tr>
+<td><code>knative.minScale</code></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><code>knative.maxScale</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>knative.containerConcurrency</code></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><code>knative.timeoutSeconds</code></td>
+<td><code>300</code></td>
+</tr>
+<tr>
+<td><code>knative.revision.annotations</code></td>
+<td><code>{}</code></td>
+</tr>
+<tr>
+<td><code>knative.revision.labels</code></td>
+<td><code>{}</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="application-config">Application Config</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app.name</code></td>
+<td><code>APEx Dispatch API</code></td>
+</tr>
+<tr>
+<td><code>app.description</code></td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>app.environment</code></td>
+<td><code>development</code></td>
+</tr>
+<tr>
+<td><code>app.version</code></td>
+<td><code>development</code></td>
+</tr>
+<tr>
+<td><code>app.corsAllowedOrigins</code></td>
+<td><code>*</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="keycloak">Keycloak</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>keycloak.host</code></td>
+<td><code>auth.dev.apex.esa.int</code></td>
+</tr>
+<tr>
+<td><code>keycloak.realm</code></td>
+<td><code>apex</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="secrets">Secrets</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>secrets.create</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>secrets.name</code></td>
+<td><code>apex-dispatch-api-secrets</code></td>
+</tr>
+<tr>
+<td><code>secrets.keycloakClientId</code></td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>secrets.keycloakClientSecret</code></td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>secrets.backends</code></td>
+<td><code>""</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>secrets.keycloakClientId</code> and <code>secrets.keycloakClientSecret</code> are only used when
+<code>secrets.create=true</code>.</p>
+<p>In that mode:</p>
+<ul>
+<li><code>secrets.keycloakClientId</code> becomes the <code>KEYCLOAK_CLIENT_ID</code> key in the generated
+  Kubernetes <code>Secret</code></li>
+<li><code>secrets.keycloakClientSecret</code> becomes the <code>KEYCLOAK_CLIENT_SECRET</code> key in the
+  generated Kubernetes <code>Secret</code></li>
+<li>the Knative service injects those secret keys into the FastAPI container as
+  <code>KEYCLOAK_CLIENT_ID</code> and <code>KEYCLOAK_CLIENT_SECRET</code> environment variables</li>
+</ul>
+<p>When <code>secrets.create=false</code>, the chart does not use those Helm values and instead
+expects an existing secret named by <code>secrets.name</code>.</p>
+<h3 id="scheduling-and-runtime">Scheduling and Runtime</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>resources</code></td>
+<td><code>{}</code></td>
+</tr>
+<tr>
+<td><code>nodeSelector</code></td>
+<td><code>{}</code></td>
+</tr>
+<tr>
+<td><code>tolerations</code></td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td><code>affinity</code></td>
+<td><code>{}</code></td>
+</tr>
+<tr>
+<td><code>extraEnv</code></td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td><code>extraEnvFrom</code></td>
+<td><code>[]</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="probes">Probes</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>probes.enabled</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>probes.readiness.httpGet.path</code></td>
+<td><code>/health</code></td>
+</tr>
+<tr>
+<td><code>probes.readiness.httpGet.port</code></td>
+<td><code>8000</code></td>
+</tr>
+<tr>
+<td><code>probes.readiness.initialDelaySeconds</code></td>
+<td><code>5</code></td>
+</tr>
+<tr>
+<td><code>probes.readiness.periodSeconds</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>probes.liveness.httpGet.path</code></td>
+<td><code>/health</code></td>
+</tr>
+<tr>
+<td><code>probes.liveness.httpGet.port</code></td>
+<td><code>8000</code></td>
+</tr>
+<tr>
+<td><code>probes.liveness.initialDelaySeconds</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>probes.liveness.periodSeconds</code></td>
+<td><code>20</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="environment-variables">Environment Variables</h2>
+<p>The chart injects application configuration through a mix of <code>ConfigMap</code> and <code>Secret</code>
+references.</p>
+<h3 id="from-the-configmap">From the ConfigMap</h3>
+<ul>
+<li><code>APP_NAME</code></li>
+<li><code>APP_DESCRIPTION</code></li>
+<li><code>APP_ENV</code></li>
+<li><code>APP_VERSION</code></li>
+<li><code>CORS_ALLOWED_ORIGINS</code></li>
+<li><code>KEYCLOAK_HOST</code></li>
+<li><code>KEYCLOAK_REALM</code></li>
+</ul>
+<h3 id="from-the-secret">From the Secret</h3>
+<ul>
+<li><code>KEYCLOAK_CLIENT_ID</code></li>
+<li><code>KEYCLOAK_CLIENT_SECRET</code></li>
+<li><code>BACKENDS</code></li>
+</ul>
+<p>If <code>secrets.create=false</code>, the secret named by <code>secrets.name</code> must already exist.</p>
+<h2 id="secret-contract">Secret Contract</h2>
+<p>When using an existing secret, it must define these keys:</p>
+<table>
+<thead>
+<tr>
+<th>Secret key</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>KEYCLOAK_CLIENT_ID</code></td>
+<td>OAuth client identifier</td>
+</tr>
+<tr>
+<td><code>KEYCLOAK_CLIENT_SECRET</code></td>
+<td>OAuth client secret</td>
+</tr>
+<tr>
+<td><code>BACKENDS</code></td>
+<td>Backend JSON configuration consumed by the FastAPI app</td>
+</tr>
+</tbody>
+</table>
+<h2 id="knative-service-behavior">Knative Service Behavior</h2>
+<p>The rendered Knative service includes:</p>
+<ul>
+<li>container port <code>8000</code> by default</li>
+<li>Knative autoscaling annotations on the revision template</li>
+<li>optional <code>imagePullSecrets</code></li>
+<li><code>serviceAccountName: dispatch-api-service-account</code> by default</li>
+<li>optional <code>readinessProbe</code> and <code>livenessProbe</code></li>
+<li>optional <code>nodeSelector</code>, <code>affinity</code>, and <code>tolerations</code></li>
+<li>optional extra environment variables and <code>envFrom</code> entries</li>
+</ul>
+<h2 id="contour-httpproxy-behavior">Contour HTTPProxy Behavior</h2>
+<p>When enabled, the rendered <code>HTTPProxy</code> includes:</p>
+<ul>
+<li>route condition prefix from <code>contour.route.prefix</code></li>
+<li>backend service name matching the Knative service full name</li>
+<li>backend service port from <code>contour.route.port</code></li>
+<li>optional metadata annotations and labels</li>
+<li>optional TLS termination using <code>contour.virtualhost.tls.*</code></li>
+</ul>
+<h2 id="repository-tasks">Repository Tasks</h2>
+<p>The current <a href="/data/work/github/apex/apex_dispatch_api_chart/Taskfile.yaml:1"><code>Taskfile.yaml</code></a>
+defines these tasks:</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>task helm:render</code></td>
+<td>Render the chart into <code>dist/rendered.yaml</code></td>
+</tr>
+<tr>
+<td><code>task helm:test</code></td>
+<td>Run Helm unit tests with <code>helm-unittest</code></td>
+</tr>
+<tr>
+<td><code>task docs:serve</code></td>
+<td>Start the MkDocs development server</td>
+</tr>
+</tbody>
+</table>
+<h2 id="test-suites">Test Suites</h2>
+<p>Helm unit tests live under <code>charts/tests/</code> and currently cover:</p>
+<ul>
+<li>config map rendering</li>
+<li>secret rendering</li>
+<li>Knative service defaults and overrides</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../explanation/" class="btn btn-neutral float-left" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../explanation/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
