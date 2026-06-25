@@ -3,6 +3,9 @@
 This repository contains a Helm chart for deploying the FastAPI-based APEx Dispatch
 API on Knative Serving using `serving.knative.dev/v1` `Service` resources.
 
+Optionally, the chart can also expose the Knative service through Contour using a
+`projectcontour.io/v1` `HTTPProxy` resource.
+
 The chart is intended for development and testing deployments of the APEx Dispatch
 API in Knative-enabled Kubernetes environments.
 
@@ -70,10 +73,18 @@ helm install apex-dispatch-api oci://ghcr.io/esa-apex/helm/apex-dispatch-api --v
 
 ## Important values
 
-- `serviceAccountName`: Kubernetes service account used by the Knative revision pod
+- `serviceAccount.create`: create a dedicated Kubernetes service account
+- `serviceAccount.existingName`: existing Kubernetes service account used when `create=false`
+- `serviceAccount.name`: service account name used when `create=true`
 - `image.repository`, `image.tag`: container image to run
 - `knative.minScale`, `knative.maxScale`: Knative autoscaling bounds
+- `contour.enabled`: enable/disable the Contour `HTTPProxy` resource
+- `contour.virtualhost.fqdn`: public hostname used by `HTTPProxy`
+- `contour.virtualhost.tls.enabled`: enable/disable TLS termination on `HTTPProxy`
+- `contour.virtualhost.tls.secretName`: TLS secret used by `HTTPProxy` when TLS is enabled
 - `secrets.create`: create the app secret from Helm values or reference an existing one
+- `externalSecret.enabled`: manage app secrets through External Secrets Operator
+- `migration.enabled`: run `alembic upgrade head` as a Helm hook Job
 - `probes.enabled`: enable `/health` probes if your runtime dependencies are ready at startup
 
 See [`docs/reference/index.md`](docs/reference/index.md) for the detailed values and
@@ -87,6 +98,7 @@ exist and contain:
 - `KEYCLOAK_CLIENT_ID`
 - `KEYCLOAK_CLIENT_SECRET`
 - `BACKENDS`
+- `DATABASE_URL`
 
 ## Documentation
 

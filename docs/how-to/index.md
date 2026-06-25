@@ -8,5 +8,6 @@ Use this section when you already know what you want to do and need the exact st
 
 - [Render the chart locally](render-the-chart-locally.md)
 - [Deploy with a custom image](deploy-with-a-custom-image.md)
+- [Expose with Contour HTTPProxy](expose-with-contour-httpproxy.md)
 - [Reuse an existing Kubernetes secret](reuse-an-existing-secret.md)
 - [Enable health probes](enable-health-probes.md)

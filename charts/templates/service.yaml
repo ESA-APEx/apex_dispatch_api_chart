@@ -26,14 +26,15 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      {{- $serviceAccountName := include "apex-dispatch-api.serviceAccountName" . }}
       containerConcurrency: {{ .Values.knative.containerConcurrency }}
       timeoutSeconds: {{ .Values.knative.timeoutSeconds }}
       {{- with .Values.image.pullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.serviceAccountName }}
-      serviceAccountName: {{ .Values.serviceAccountName }}
+      {{- if $serviceAccountName }}
+      serviceAccountName: {{ $serviceAccountName }}
       {{- end }}
       containers:
         - name: {{ include "apex-dispatch-api.name" . }}
@@ -66,6 +67,12 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.secrets.name }}
                   key: BACKENDS
+                  optional: {{ not .Values.secrets.create }}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.name }}
+                  key: DATABASE_URL
                   optional: {{ not .Values.secrets.create }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}

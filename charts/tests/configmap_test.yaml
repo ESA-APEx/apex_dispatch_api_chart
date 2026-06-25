@@ -18,6 +18,9 @@ tests:
           path: data.APP_ENV
           value: development
       - equal:
+          path: data.APP_DESCRIPTION
+          value: APEx Dispatch Service API to run jobs and upscaling tasks
+      - equal:
           path: data.KEYCLOAK_HOST
           value: auth.dev.apex.esa.int
 

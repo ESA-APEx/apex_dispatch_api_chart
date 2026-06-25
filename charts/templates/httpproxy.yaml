@@ -1,0 +1,48 @@
+{{- if .Values.contour.enabled }}
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: {{ default (include "apex-dispatch-api.fullname" .) .Values.contour.name }}
+  labels:
+    {{- include "apex-dispatch-api.labels" . | nindent 4 }}
+    {{- with .Values.contour.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.contour.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  virtualhost:
+    fqdn: {{ required "contour.virtualhost.fqdn is required when contour.enabled=true" .Values.contour.virtualhost.fqdn | quote }}
+    {{- if .Values.contour.virtualhost.tls.enabled }}
+    tls:
+      secretName: {{ required "contour.virtualhost.tls.secretName is required when contour.virtualhost.tls.enabled=true" .Values.contour.virtualhost.tls.secretName | quote }}
+      {{- with .Values.contour.virtualhost.tls.minimumProtocolVersion }}
+      minimumProtocolVersion: {{ . | quote }}
+      {{- end }}
+    {{- end }}
+    {{- with .Values.contour.virtualhost.corsPolicy }}
+    corsPolicy:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.contour.virtualhost.authorization }}
+    authorization:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- if .Values.contour.routes }}
+  routes:
+    {{- tpl (toYaml .Values.contour.routes) . | nindent 4 }}
+  {{- else }}
+  routes:
+    - conditions:
+        - prefix: /
+      requestHeadersPolicy:
+        set:
+          - name: Host
+            value: {{ printf "%s.%s.svc.cluster.local" (include "apex-dispatch-api.fullname" .) .Release.Namespace | quote }}
+      services:
+        - name: {{ include "apex-dispatch-api.fullname" . }}
+          port: 80
+  {{- end }}
+{{- end }}

@@ -47,3 +47,22 @@ Selector labels.
 app.kubernetes.io/name: {{ include "apex-dispatch-api.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+Resolve the service account name.
+*/}}
+{{- define "apex-dispatch-api.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- if .Values.serviceAccount.name }}
+{{- .Values.serviceAccount.name -}}
+{{- else -}}
+{{- include "apex-dispatch-api.fullname" . -}}
+{{- end -}}
+{{- else -}}
+{{- if .Values.serviceAccount.existingName }}
+{{- .Values.serviceAccount.existingName -}}
+{{- else -}}
+{{- "" -}}
+{{- end -}}
+{{- end -}}
+{{- end }}

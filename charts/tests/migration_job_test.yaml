@@ -1,0 +1,46 @@
+suite: migration job template
+release:
+  name: apex-dispatch-api
+templates:
+  - templates/migration-job.yaml
+tests:
+  - it: does not render migration job by default
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders migration job with defaults when enabled
+    set:
+      migration:
+        enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Job
+      - equal:
+          path: metadata.name
+          value: apex-dispatch-api-migrate
+      - equal:
+          path: spec.template.spec.containers[0].command[0]
+          value: alembic
+      - equal:
+          path: spec.template.spec.containers[0].env[0].valueFrom.secretKeyRef.key
+          value: DATABASE_URL
+
+  - it: supports command and args override
+    set:
+      migration:
+        enabled: true
+        command:
+          - /bin/sh
+          - -c
+        args:
+          - alembic upgrade head
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].command[0]
+          value: /bin/sh
+      - equal:
+          path: spec.template.spec.containers[0].args[0]
+          value: alembic upgrade head

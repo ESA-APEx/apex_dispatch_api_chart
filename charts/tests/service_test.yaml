@@ -40,11 +40,22 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].env[0].valueFrom.secretKeyRef.name
           value: apex-dispatch-api-secrets
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: apex-dispatch-api-secrets
+                key: DATABASE_URL
+                optional: true
       - notExists:
           path: spec.template.spec.containers[0].readinessProbe
 
   - it: renders service overrides including probes and extra env
     set:
+      serviceAccount:
+        name: apex-runtime-sa
       image:
         repository: registry.example.org/apex-dispatch-api
         tag: "2.0.0"
@@ -108,7 +119,7 @@ tests:
           value: 120
       - equal:
           path: spec.template.spec.serviceAccountName
-          value: dispatch-api-service-account
+          value: apex-runtime-sa
       - equal:
           path: spec.template.spec.imagePullSecrets[0].name
           value: regcred
@@ -132,3 +143,13 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.periodSeconds
           value: 9
+
+  - it: uses serviceAccount.existingName when create is false
+    set:
+      serviceAccount:
+        create: false
+        existingName: namespace-runtime-sa
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: namespace-runtime-sa

@@ -7,10 +7,12 @@ This page is the technical lookup for the APEx Dispatch API Knative Helm chart.
 - Chart path: `charts/`
 - Chart API version: `v2`
 - Workload kind: `serving.knative.dev/v1` `Service`
+- Optional ingress kind: `projectcontour.io/v1` `HTTPProxy`
 - OCI artifact: `oci://ghcr.io/esa-apex/helm/apex-dispatch-api`
 - OCI package page: [GitHub Container Registry package](https://github.com/ESA-APEx/apex_dispatch_api_chart/pkgs/container/helm%2Fapex-dispatch-api)
 - Main templates:
   - `templates/service.yaml`
+  - `templates/httpproxy.yaml`
   - `templates/configmap.yaml`
   - `templates/secret.yaml`
 
@@ -44,6 +46,10 @@ The chart can render these Kubernetes resources:
 - Knative `Service`
   - API version: `serving.knative.dev/v1`
   - Purpose: deploy the FastAPI container with Knative Serving
+- Contour `HTTPProxy`
+  - Rendered only when `contour.enabled=true`
+  - API version: `projectcontour.io/v1`
+  - Purpose: publish the Knative service with host/path routing and optional TLS
 
 ## Default Values
 
@@ -69,6 +75,29 @@ The chart can render these Kubernetes resources:
 | Key | Default |
 | --- | --- |
 | `service.port` | `8000` |
+
+### Contour HTTPProxy
+
+| Key | Default |
+| --- | --- |
+| `contour.enabled` | `false` |
+| `contour.name` | `""` |
+| `contour.annotations` | `{}` |
+| `contour.labels` | `{}` |
+| `contour.virtualhost.fqdn` | `""` |
+| `contour.virtualhost.tls.enabled` | `false` |
+| `contour.virtualhost.tls.secretName` | `""` |
+| `contour.virtualhost.tls.minimumProtocolVersion` | `""` |
+| `contour.virtualhost.tls.permitInsecure` | `false` |
+| `contour.route.prefix` | `/` |
+| `contour.route.port` | `80` |
+| `contour.route.enableWebsockets` | `false` |
+| `contour.route.timeoutPolicy.response` | `""` |
+
+When `contour.enabled=true`:
+
+- `contour.virtualhost.fqdn` is required
+- if `contour.virtualhost.tls.enabled=true`, `contour.virtualhost.tls.secretName` is required
 
 ### Knative
 
@@ -194,6 +223,16 @@ The rendered Knative service includes:
 - optional `readinessProbe` and `livenessProbe`
 - optional `nodeSelector`, `affinity`, and `tolerations`
 - optional extra environment variables and `envFrom` entries
+
+## Contour HTTPProxy Behavior
+
+When enabled, the rendered `HTTPProxy` includes:
+
+- route condition prefix from `contour.route.prefix`
+- backend service name matching the Knative service full name
+- backend service port from `contour.route.port`
+- optional metadata annotations and labels
+- optional TLS termination using `contour.virtualhost.tls.*`
 
 ## Repository Tasks
 
